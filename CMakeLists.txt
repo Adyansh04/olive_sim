@@ -32,12 +32,6 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}/
 )
 
-# Install materials
-install(DIRECTORY
-  materials
-  DESTINATION share/${PROJECT_NAME}/
-)
-
 # Install models
 install(DIRECTORY
   models
