@@ -1,0 +1,126 @@
+# World Configuration for Olive Bot Simulation
+# This file defines available worlds and their respective spawn configurations
+
+worlds:
+  # Default fusion test world
+  fusion_test:
+    name: "Fusion Test World"
+    description: "Original loop layout with textured walls for basic sensor fusion testing"
+    world_file: "fusion_test_world_fortress.sdf"
+    spawn_location:
+      x: 0.0
+      y: 0.0
+      z: 0.1
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    characteristics:
+      - "Long straight hallways"
+      - "Corner turns for rotation testing"
+      - "Mixed wall textures"
+    difficulty: "medium"
+    size: "10m x 8m"
+    
+  # Warehouse world
+  warehouse:
+    name: "Industrial Warehouse"
+    description: "L-shaped warehouse with varied material properties and industrial lighting"
+    world_file: "warehouse_world.sdf"
+    spawn_location:
+      x: -3.0
+      y: -3.0
+      z: 0.1
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.785  # 45 degrees
+    characteristics:
+      - "Corrugated metal textures"
+      - "Low-light conditions"
+      - "Varied material reflectance"
+    difficulty: "medium"
+    size: "12m x 12m"
+    
+  # Maze world
+  maze:
+    name: "Navigation Maze"
+    description: "Complex maze with multiple paths and colored surfaces for feature-rich testing"
+    world_file: "maze_world.sdf"
+    spawn_location:
+      x: -6.0
+      y: -6.0
+      z: 0.1
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.0
+    characteristics:
+      - "Multi-colored painted surfaces"
+      - "Complex path choices"
+      - "High visual feature density"
+    difficulty: "hard"
+    size: "16m x 16m"
+    
+  # Office corridor world
+  office:
+    name: "Office Corridor"
+    description: "T-shaped office environment with subtle textures and soft lighting"
+    world_file: "office_corridor_world.sdf"
+    spawn_location:
+      x: 0.0
+      y: -3.0
+      z: 0.1
+      roll: 0.0
+      pitch: 0.0
+      yaw: 1.5708  # 90 degrees - facing north
+    characteristics:
+      - "Drywall and wood paneling"
+      - "Low-contrast environment"
+      - "Soft diffused lighting"
+    difficulty: "hard"
+    size: "10m x 10m"
+    
+  # Industrial facility world
+  industrial:
+    name: "Industrial Facility"
+    description: "Open floor plan with structural columns and metallic surfaces"
+    world_file: "industrial_facility_world.sdf"
+    spawn_location:
+      x: -5.0
+      y: -5.0
+      z: 0.1
+      roll: 0.0
+      pitch: 0.0
+      yaw: 0.785  # 45 degrees
+    characteristics:
+      - "Sparse features"
+      - "Metallic reflections"
+      - "Open floor plan"
+      - "Structural columns"
+    difficulty: "very_hard"
+    size: "18m x 18m"
+
+# Default world to use if none specified
+default_world: "fusion_test"
+
+# Testing sequence recommendation
+recommended_testing_sequence:
+  - "fusion_test"    # Start with baseline
+  - "warehouse"      # Add complexity with varied materials
+  - "maze"           # Test with high feature density
+  - "office"         # Challenge with low contrast
+  - "industrial"     # Test sparse features
+
+# Additional configurations
+simulation_settings:
+  use_sim_time: true
+  physics_update_rate: 1000  # Hz
+  real_time_factor: 1.0
+  
+visualization_settings:
+  use_rviz: true
+  camera_follow_robot: false
+  
+robot_settings:
+  max_linear_velocity: 0.5   # m/s
+  max_angular_velocity: 1.0  # rad/s
+  wheel_radius: 0.05         # m
+  wheel_separation: 0.34     # m

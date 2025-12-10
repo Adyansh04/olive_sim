@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<sdf version="1.7">
+  <model name="WhyCode_3">
+    <static>true</static>
+    <link name="link">
+      <pose>0 0 0 0 -2.0944 0</pose>
+      <collision name="collision">
+        <geometry>
+          <box>
+            <size>0.2 0.2 0.01</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <box>
+            <size>0.2 0.2 0.01</size>
+          </box>
+        </geometry>
+        <material>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0 0 0 1</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://whycode_3/materials/textures/whycode_4.png</albedo_map>
+              <roughness>0.5</roughness>
+              <metalness>0.0</metalness>
+            </metal>
+          </pbr>
+          <!-- Fallback for Ogre 1.x -->
+          <script>
+            <uri>model://whycode_3/materials/scripts</uri>
+            <uri>model://whycode_3/materials/textures</uri>
+            <name>WhyCode_3/Marker</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

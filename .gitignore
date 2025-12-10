@@ -1,0 +1,33 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ROS 2 build artifacts
+build/
+install/
+log/
+devel/
+
+# Colcon
+.colcon/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+
+# Temporary files
+/tmp/
+*.tmp

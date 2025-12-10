@@ -1,0 +1,20 @@
+material WhyCode_3/Marker
+{
+  technique
+  {
+    pass
+    {
+      lighting off
+      ambient 1 1 1 1
+      diffuse 1 1 1 1
+      specular 0 0 0 1
+      emissive 1 1 1 1
+
+      texture_unit
+      {
+        texture whycode_4.png
+        filtering trilinear
+      }
+    }
+  }
+}
