@@ -168,6 +168,7 @@ def load_world_config(context, *args, **kwargs):
             '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
             '/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
             '/joint_states@sensor_msgs/msg/JointState@gz.msgs.Model',
+            '/ground_truth@nav_msgs/msg/Odometry@gz.msgs.Odometry',
         ],
         output='screen'
     )
