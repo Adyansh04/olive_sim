@@ -63,18 +63,18 @@ To add additional markers (e.g., whycode_4, whycode_5):
    </include>
    ```
 
-## Setting GAZEBO_MODEL_PATH
+## Setting GZ_SIM_RESOURCE_PATH
 
-For Gazebo to find these models, add the models directory to your GAZEBO_MODEL_PATH:
+For Gazebo to find these models, add the models directory to your GZ_SIM_RESOURCE_PATH:
 
 ```bash
-export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(ros2 pkg prefix olive_sim)/share/olive_sim/models
+export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:$(ros2 pkg prefix olive_sim)/share/olive_sim/models
 ```
 
 Or add to your `~/.bashrc`:
 
 ```bash
-echo 'export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(ros2 pkg prefix olive_sim)/share/olive_sim/models' >> ~/.bashrc
+echo 'export GZ_SIM_RESOURCE_PATH=$GZ_SIM_RESOURCE_PATH:$(ros2 pkg prefix olive_sim)/share/olive_sim/models' >> ~/.bashrc
 ```
 
 ## Marker Image Requirements
@@ -99,10 +99,10 @@ WhyCode markers can be generated using:
 **Markers appear as white boxes**: 
 - Check that marker images are in the correct location
 - Verify image format is PNG
-- Ensure GAZEBO_MODEL_PATH is set correctly
+- Ensure GZ_SIM_RESOURCE_PATH is set correctly
 
 **Model not found error**:
-- Verify models directory is in GAZEBO_MODEL_PATH
+- Verify models directory is in GZ_SIM_RESOURCE_PATH
 - Check that model.config and model.sdf exist
 - Ensure directory name matches URI in world file
 

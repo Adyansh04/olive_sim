@@ -52,23 +52,23 @@ Current worlds configured:
 
 ### Using YAML Configuration (Recommended)
 
-The new `simulation_fortress_yaml.launch.py` launch file uses the YAML configuration:
+The new `simulation.launch.py` launch file uses the YAML configuration:
 
 ```bash
 # Launch with default world (fusion_test)
-ros2 launch olive_sim simulation_fortress_yaml.launch.py
+ros2 launch olive_sim simulation.launch.py
 
 # Launch specific world using config spawn location
-ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=maze
+ros2 launch olive_sim simulation.launch.py world_name:=maze
 
 # Launch warehouse world
-ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=warehouse
+ros2 launch olive_sim simulation.launch.py world_name:=warehouse
 
 # Launch office world
-ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=office
+ros2 launch olive_sim simulation.launch.py world_name:=office
 
 # Launch industrial world
-ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=industrial
+ros2 launch olive_sim simulation.launch.py world_name:=industrial
 ```
 
 ### Custom Spawn Location
@@ -77,7 +77,7 @@ Override the config spawn location:
 
 ```bash
 # Use custom spawn location instead of config
-ros2 launch olive_sim simulation_fortress_yaml.launch.py \
+ros2 launch olive_sim simulation.launch.py \
   world_name:=maze \
   use_config_spawn:=false \
   x_pose:=2.0 \
@@ -89,7 +89,7 @@ ros2 launch olive_sim simulation_fortress_yaml.launch.py \
 ### Without RViz
 
 ```bash
-ros2 launch olive_sim simulation_fortress_yaml.launch.py \
+ros2 launch olive_sim simulation.launch.py \
   world_name:=warehouse \
   use_rviz:=false
 ```
@@ -134,7 +134,7 @@ Run all worlds in sequence:
 ```bash
 for world in fusion_test warehouse maze office industrial; do
   echo "Testing world: $world"
-  ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=$world
+  ros2 launch olive_sim simulation.launch.py world_name:=$world
   # Add test execution here
 done
 ```
@@ -167,7 +167,7 @@ my_custom_world:
 
 3. Launch your world:
 ```bash
-ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=my_custom_world
+ros2 launch olive_sim simulation.launch.py world_name:=my_custom_world
 ```
 
 ### Adding Custom Parameters

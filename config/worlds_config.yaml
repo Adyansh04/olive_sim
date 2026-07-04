@@ -6,7 +6,7 @@ worlds:
   fusion_test:
     name: "Fusion Test World"
     description: "Original loop layout with textured walls for basic sensor fusion testing"
-    world_file: "fusion_test_world_fortress.sdf"
+    world_file: "fusion_test_world.sdf"
     spawn_location:
       x: 0.0
       y: 0.0
