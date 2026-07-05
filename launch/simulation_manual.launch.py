@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """
-ROS 2 Launch file for olive_bot simulation in Gazebo Fortress (Ignition Gazebo)
+ROS 2 Launch file for olive_bot simulation in Gazebo Harmonic
 """
 
 import os
@@ -22,17 +22,17 @@ def generate_launch_description():
 
     # Set Gazebo resource path to include our models
     gz_resource_path = SetEnvironmentVariable(
-        name='IGN_GAZEBO_RESOURCE_PATH',
+        name='GZ_SIM_RESOURCE_PATH',
         value=[
             os.path.join(pkg_olive_sim, 'models'),
             ':',
-            os.environ.get('IGN_GAZEBO_RESOURCE_PATH', '')
+            os.environ.get('GZ_SIM_RESOURCE_PATH', '')
         ]
     )
 
     # Paths to files
-    urdf_file = os.path.join(pkg_olive_sim, 'urdf', 'olive_bot_fortress.urdf.xacro')
-    world_file = os.path.join(pkg_olive_sim, 'worlds', 'fusion_test_world_fortress.sdf')
+    urdf_file = os.path.join(pkg_olive_sim, 'urdf', 'olive_bot.urdf.xacro')
+    world_file = os.path.join(pkg_olive_sim, 'worlds', 'fusion_test_world.sdf')
     rviz_config_file = os.path.join(pkg_olive_sim, 'rviz', 'olive_bot.rviz')
 
     # Launch configuration variables
@@ -97,7 +97,7 @@ def generate_launch_description():
         ]
     )
 
-    # Gazebo Fortress (Ignition Gazebo)
+    # Gazebo Harmonic
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')

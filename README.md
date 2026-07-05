@@ -1,242 +1,108 @@
-# Project Olive Sim - ROS 2 Sensor Fusion Simulation
+# Olive Sim — ROS 2 Jazzy Sensor-Fusion Simulation
 
-A complete ROS 2 (Humble) simulation package for testing multi-modal sensor fusion algorithms with a 4-wheeled differential drive mobile robot in Gazebo.
+A ROS 2 **Jazzy** / Gazebo **Harmonic** (gz-sim 8) simulation for developing and stress-testing the OLIVE multi-modal sensor-fusion stack. It ships a clean differential-drive robot with a 3D LiDAR, IMU, and RGB camera, five test worlds, and four WhyCode fiducial markers at known positions.
 
-## Gazebo Versions
+> **Gazebo version:** this package targets **Gazebo Harmonic** (the Jazzy pairing). The old Gazebo Fortress / Gazebo Classic files have been removed — everything here uses the `gz-sim-*-system` plugins and the `gz` CLI.
 
-This package supports both:
-- **Gazebo Fortress (Ignition Gazebo)** - Recommended for ROS 2 Humble (files with `_fortress` suffix)
-- **Gazebo Classic** - Legacy support (original files without suffix)
+## Package contents
 
-**⚠️ Note**: Gazebo Classic is End-of-Life (EOL). The Fortress version is recommended for all new projects.
-
-## Package Contents
-
-### 1. Robot (olive_bot)
-- **Base:** 4-wheeled differential drive mobile robot (skid-steer configuration)
-- **Dimensions:** 0.5m x 0.3m x 0.15m chassis
+### 1. Robot (`olive_bot`)
+- **Base:** 2-wheel **differential drive** with two frictionless ball casters (front + rear). This replaced the old 4-wheel skid-steer, which slipped on every turn and produced poor `/odom`; the diff-drive layout matches the `DiffDrive` plugin kinematics exactly for clean, low-slip wheel odometry.
+- **Chassis:** 0.40 m × 0.30 m × 0.12 m, ~10 kg.
 - **Sensors:**
-  - **IMU:** Center-mounted, 100Hz update rate (`/imu/data`)
-  - **3D LiDAR:** 16-layer sensor, 10m range, 10Hz update rate (`/lidar/points`)
-  - **RGB Camera:** 640x480 resolution, 30Hz update rate (`/camera/image_raw`)
-- **Visual Design:** Blue chassis, black wheels
+  - **IMU** — 100 Hz, `/imu/data`
+  - **3D LiDAR** — 16-beam, 10 m range, 10 Hz, `/lidar/points`
+  - **RGB camera** — 640×480, 30 Hz, `/camera/image_raw` (+ `/camera/camera_info`)
+- **Frames (REP-105):** `odom → base_footprint → base_link → {imu_link, lidar_link, camera_link → camera_optical_link}`. `DiffDrive` publishes `odom → base_footprint`; a separate ground-truth odometry is published on `/ground_truth` (topic only, not TF).
 
-### 2. Test Environments (5 Diverse Worlds)
+### 2. Test worlds (5)
+| Name | File | Size | Character |
+|------|------|------|-----------|
+| `fusion_test` | `fusion_test_world.sdf` | 10×8 m | Original loop, textured walls, loop closure |
+| `warehouse` | `warehouse_world.sdf` | 12×12 m | Corrugated metal, low light, varied reflectance |
+| `maze` | `maze_world.sdf` | 16×16 m | Multi-colored surfaces, high feature density |
+| `office` | `office_corridor_world.sdf` | 10×10 m | Drywall/wood, low contrast, soft lighting |
+| `industrial` | `industrial_facility_world.sdf` | 18×18 m | Steel structures, sparse features |
 
-All worlds feature PBR materials, varied textures, and WhyCode markers:
+See [worlds/README.md](worlds/README.md) for details.
 
-1. **fusion_test_world_fortress.sdf** - Original loop (10m × 8m)
-   - Mixed textured walls, loop closure testing
-   
-2. **warehouse_world.sdf** - Industrial warehouse (12m × 12m)
-   - Corrugated metal, low-light conditions, varied reflectance
-   
-3. **maze_world.sdf** - Navigation maze (16m × 16m)
-   - Multi-colored surfaces, complex paths, high feature density
-   
-4. **office_corridor_world.sdf** - Office environment (10m × 10m)
-   - Drywall, wood paneling, low-contrast, soft lighting
-   
-5. **industrial_facility_world.sdf** - Industrial facility (18m × 18m)
-   - Steel structures, sparse features, metallic reflections
+### 3. YAML configuration
+`config/worlds_config.yaml` holds per-world spawn poses, characteristics, and the default world. See [config/README.md](config/README.md).
 
-See [worlds/README.md](worlds/README.md) for detailed world documentation.
+### 4. Launch files
+- **`simulation.launch.py`** (recommended) — YAML-driven world/spawn selection.
+- **`simulation_manual.launch.py`** — manual world path + spawn via launch args.
 
-### 3. YAML Configuration System
-
-Centralized configuration in `config/worlds_config.yaml`:
-- Pre-configured optimal spawn locations for each world
-- World characteristics and difficulty levels
-- Simulation and visualization settings
-- Extensible for custom parameters
-
-See [config/README.md](config/README.md) for configuration guide.
-
-### 4. Launch System
-- **YAML-based launch** (recommended): Automatic spawn positioning from config
-- **Standard launch**: Manual spawn with launch arguments
-- Automatic robot spawning and environment setup
-- RViz2 visualization preconfigured
-- ROS 2 bridges for sensor data (Fortress version)
-
-## Building the Package
+## Building
 
 ```bash
-# Navigate to your ROS 2 workspace
-cd ~/ros2_ws/src
+# ROS 2 Jazzy + Gazebo Harmonic bridges
+sudo apt install ros-jazzy-ros-gz
 
-# Clone or copy this package
-# (Assuming the package is already in the workspace)
-
-# Install dependencies
-sudo apt install ros-humble-ros-gz-sim ros-humble-ros-gz-bridge ros-humble-ros-gz-image
-
-# Build the package
-cd ~/ros2_ws
-colcon build --packages-select olive_sim
-
-# Source the workspace
-source install/setup.bash
-
-# Set GAZEBO_MODEL_PATH for custom markers
-export GAZEBO_MODEL_PATH=$GAZEBO_MODEL_PATH:$(ros2 pkg prefix olive_sim)/share/olive_sim/models
+cd ~/olive_ws
+colcon build --symlink-install --packages-select olive_sim
+source install/setup.bash   # or setup.zsh
 ```
 
-**For Gazebo Classic Support (Legacy):**
+The launch files add the package's `models/` directory to `GZ_SIM_RESOURCE_PATH` automatically so the WhyCode markers resolve.
+
+## Running
 
 ```bash
-# Additional dependency for Gazebo Classic
-sudo apt install ros-humble-gazebo-ros-pkgs
-```
-
-## Running the Simulation
-
-### Gazebo Fortress with YAML Configuration (Recommended)
-
-```bash
-# Launch with default world (fusion_test) using config spawn
-ros2 launch olive_sim simulation_fortress_yaml.launch.py
-
-# Launch specific world with config spawn
-ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=maze
-ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=warehouse
-ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=office
-ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=industrial
-
-# Override spawn location
-ros2 launch olive_sim simulation_fortress_yaml.launch.py \
-  world_name:=warehouse \
-  use_config_spawn:=false \
-  x_pose:=1.0 y_pose:=2.0 z_pose:=0.1 yaw:=1.57
-
-# Without RViz
-ros2 launch olive_sim simulation_fortress_yaml.launch.py \
-  world_name:=maze \
-  use_rviz:=false
-```
-
-### Gazebo Fortress (Standard Launch)
-
-```bash
-# Launch with default world
-ros2 launch olive_sim simulation_fortress.launch.py
-
-# Launch with specific world (manual path)
-ros2 launch olive_sim simulation_fortress.launch.py \
-  world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/warehouse_world.sdf
-
-# Optional: Launch without RViz
-ros2 launch olive_sim simulation_fortress.launch.py use_rviz:=false
-
-# Optional: Spawn robot at a different position
-ros2 launch olive_sim simulation_fortress.launch.py x_pose:=2.0 y_pose:=2.0
-```
-
-### Gazebo Classic (Legacy)
-
-```bash
-# Launch with Gazebo Classic
+# Default world (fusion_test) with GUI + RViz
 ros2 launch olive_sim simulation.launch.py
+
+# Pick a world
+ros2 launch olive_sim simulation.launch.py world_name:=maze     # fusion_test|warehouse|maze|office|industrial
+
+# Headless (server-only, no GUI) — CI, robots, or if the Qt GUI misbehaves
+ros2 launch olive_sim simulation.launch.py world_name:=warehouse headless:=true use_rviz:=false
+
+# Override spawn pose
+ros2 launch olive_sim simulation.launch.py world_name:=warehouse \
+  use_config_spawn:=false x_pose:=1.0 y_pose:=2.0 z_pose:=0.1 yaw:=1.57
+
+# Manual launch with an explicit world path
+ros2 launch olive_sim simulation_manual.launch.py \
+  world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/maze_world.sdf
 ```
 
-## Controlling the Robot
+## Controlling the robot
 
 ```bash
-# Use keyboard teleoperation (install if needed)
-ros2 run teleop_twist_keyboard teleop_twist_keyboard --ros-args --remap /cmd_vel:=/cmd_vel
-
-# Or publish velocity commands directly
-ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.5}, angular: {z: 0.0}}"
+ros2 run teleop_twist_keyboard teleop_twist_keyboard          # keyboard teleop
+ros2 topic pub /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.3}, angular: {z: 0.0}}"
 ```
 
-## Available Topics
+## Topics
 
-### Robot Control
-- `/cmd_vel` - Velocity commands (geometry_msgs/Twist)
-- `/odom` - Odometry data (nav_msgs/Odometry)
+| Topic | Type | Notes |
+|-------|------|-------|
+| `/cmd_vel` | `geometry_msgs/Twist` | velocity command in |
+| `/odom` | `nav_msgs/Odometry` | wheel odometry (50 Hz) |
+| `/ground_truth` | `nav_msgs/Odometry` | perfect pose (30 Hz) |
+| `/imu/data` | `sensor_msgs/Imu` | 100 Hz |
+| `/lidar/points` | `sensor_msgs/PointCloud2` | 16-beam, 10 Hz |
+| `/camera/image_raw` | `sensor_msgs/Image` | 640×480, 30 Hz |
+| `/camera/camera_info` | `sensor_msgs/CameraInfo` | |
+| `/joint_states` | `sensor_msgs/JointState` | wheel joints |
+| `/tf`, `/tf_static` | `tf2_msgs/TFMessage` | |
+| `/clock` | `rosgraph_msgs/Clock` | sim time (`use_sim_time`) |
 
-### Sensor Data
-- `/imu/data` - IMU measurements (sensor_msgs/Imu)
-- `/lidar/points` - 3D point cloud (sensor_msgs/PointCloud2)
-- `/camera/image_raw` - RGB camera images (sensor_msgs/Image)
-- `/camera/camera_info` - Camera calibration info
-- `/joint_states` - Wheel joint states (sensor_msgs/JointState)
+## WhyCode markers
 
-## WhyCode Marker Configuration
+Four WhyCode fiducial markers sit at known corner positions (used as global anchors for the fusion stack):
 
-The simulation includes 4 configurable WhyCode fiducial markers at the corners of the environment:
+| Marker | Corner | Position (x, y, z) |
+|--------|--------|--------------------|
+| 0 | NE | (4.5, 4.5, 1.0) |
+| 1 | NW | (-4.5, 4.5, 1.0) |
+| 2 | SW | (-4.5, -4.5, 1.0) |
+| 3 | SE | (4.5, -4.5, 1.0) |
 
-- **Marker 0:** North-East corner (4.5, 4.5, 1.0)
-- **Marker 1:** North-West corner (-4.5, 4.5, 1.0)
-- **Marker 2:** South-West corner (-4.5, -4.5, 1.0)
-- **Marker 3:** South-East corner (4.5, -4.5, 1.0)
+See [models/README.md](models/README.md) for replacing marker textures / adding markers.
 
-### Customizing WhyCode Markers
-
-See [models/README.md](models/README.md) for detailed instructions on:
-- Replacing marker images with your own WhyCode patterns
-- Importing markers from the `whycode-database` branch
-- Generating placeholder markers for testing
-- Adding additional markers to the environment
-
-Quick setup:
-
-1. Place your WhyCode marker PNGs in `models/whycode_X/materials/textures/marker_X.png`
-2. Or generate placeholders: `cd models && python3 generate_markers.py`
-3. Or copy from whycode-database branch (see models/README.md)
-
-## Testing Sensor Fusion
-
-This environment is designed to stress-test odometry algorithms across diverse scenarios:
-
-### 5 Worlds for Comprehensive Testing
-
-1. **Fusion Test** (fusion_test): Baseline loop layout
-   - Featureless hallways test wheel odometry and IMU
-   - Textured corners test visual odometry
-   - Loop closure testing
-
-2. **Warehouse** (warehouse): Varied material reflectance
-   - Low-light industrial conditions
-   - Metal, brick, concrete, plaster textures
-   - Tests challenging lighting
-
-3. **Maze** (maze): Complex navigation
-   - High visual feature density
-   - Multi-colored surfaces
-   - Path planning and loop closure
-
-4. **Office** (office): Low-contrast environment
-   - Subtle texture detection
-   - Soft diffused lighting
-   - Drywall and wood paneling
-
-5. **Industrial** (industrial): Sparse features
-   - Open floor plan
-   - Metallic reflections
-   - Structural columns as landmarks
-
-### Recommended Testing Sequence
-
-Use the YAML config's recommended sequence:
-
-```bash
-# Run all worlds in recommended order
-for world in fusion_test warehouse maze office industrial; do
-  ros2 launch olive_sim simulation_fortress_yaml.launch.py world_name:=$world
-  # Perform your sensor fusion tests here
-done
-```
-
-### Testing Aspects
-
-- **WhyCode Markers:** Use for ground truth localization at known corners
-- **Loop Closure:** Drive loops to test drift accumulation
-- **Varied Lighting:** Test robustness across different illumination
-- **Material Diversity:** Test feature extraction on different surfaces
-
-
-## File Structure
+## File structure
 
 ```
 olive_sim/
@@ -244,57 +110,32 @@ olive_sim/
 ├── package.xml
 ├── README.md
 ├── config/
-│   ├── worlds_config.yaml                 # YAML world configuration (NEW)
-│   └── README.md                          # Configuration guide (NEW)
+│   ├── worlds_config.yaml            # world selection + spawn poses
+│   └── README.md
 ├── launch/
-│   ├── simulation.launch.py               # Gazebo Classic launch
-│   ├── simulation_fortress.launch.py      # Gazebo Fortress launch
-│   └── simulation_fortress_yaml.launch.py # YAML-configured launch (NEW)
+│   ├── simulation.launch.py          # YAML-configured launch (primary)
+│   └── simulation_manual.launch.py   # manual world-path launch
 ├── urdf/
-│   ├── olive_bot.urdf.xacro               # Robot for Gazebo Classic
-│   └── olive_bot_fortress.urdf.xacro      # Robot for Gazebo Fortress (recommended)
+│   └── olive_bot.urdf.xacro          # diff-drive + caster robot (Harmonic)
 ├── worlds/
-│   ├── fusion_test_world.sdf              # World for Gazebo Classic
-│   ├── fusion_test_world_fortress.sdf     # Original Fortress world
-│   ├── warehouse_world.sdf                # Industrial warehouse (NEW)
-│   ├── maze_world.sdf                     # Navigation maze (NEW)
-│   ├── office_corridor_world.sdf          # Office environment (NEW)
-│   ├── industrial_facility_world.sdf      # Industrial facility (NEW)
-│   └── README.md                          # World documentation (NEW)
+│   ├── fusion_test_world.sdf
+│   ├── warehouse_world.sdf
+│   ├── maze_world.sdf
+│   ├── office_corridor_world.sdf
+│   ├── industrial_facility_world.sdf
+│   └── README.md
 ├── rviz/
 │   └── olive_bot.rviz
-├── models/                                 # WhyCode marker models
-│   ├── README.md                           # Marker configuration guide
-│   ├── generate_markers.py                 # Placeholder marker generator
-│   ├── whycode_0/                          # Marker 0 model (with real images)
-│   ├── whycode_1/                          # Marker 1 model (with real images)
-│   ├── whycode_2/                          # Marker 2 model (with real images)
-│   └── whycode_3/                          # Marker 3 model (with real images)
-└── materials/                              # Legacy material directory
-    └── textures/
-        └── README.md
+└── models/                           # WhyCode marker models
+    ├── README.md
+    ├── generate_markers.py
+    └── whycode_0 … whycode_3/
 ```
 
 ## Troubleshooting
 
-### Gazebo Fortress doesn't start
-- Ensure Gazebo Fortress is installed: `ign sim --version` should show Fortress (7.x)
-- Install ROS-Gazebo bridges: `sudo apt install ros-humble-ros-gz-sim ros-humble-ros-gz-bridge`
-
-### Robot doesn't spawn
-- Check URDF validity: `ros2 run robot_state_publisher robot_state_publisher --ros-args -p robot_description:="$(xacro urdf/olive_bot_fortress.urdf.xacro)"`
-- Verify Gazebo is running: `ign topic -l`
-
-### No sensor data
-- Check topics: `ros2 topic list`
-- Verify bridges are running (Fortress): `ros2 node list | grep bridge`
-- Check Gazebo topics: `ign topic -l`
-
-### Markers don't appear or show no texture
-- Verify GAZEBO_MODEL_PATH is set correctly
-- Check marker images exist: `ls models/whycode_0/materials/textures/`
-- Ensure images are PNG format
-- See [models/README.md](models/README.md) for detailed troubleshooting
-
-### Migrating from whycode-database branch
-See [models/README.md](models/README.md) for instructions on importing markers.
+- **Gazebo doesn't start:** confirm Harmonic is installed — `gz sim --version` should report 8.x. Install the bridges with `sudo apt install ros-jazzy-ros-gz`.
+- **GUI crashes with a `libpthread` / `GLIBC_PRIVATE` symbol-lookup error:** a snap environment (e.g. a snap-installed VS Code/terminal) is leaking libraries into the process. Launch from a non-snap terminal, or run `headless:=true`.
+- **Robot doesn't spawn:** check the URDF — `xacro urdf/olive_bot.urdf.xacro | check_urdf /dev/stdin`.
+- **No sensor data:** `ros2 topic list`; verify bridges with `ros2 node list | grep bridge`; inspect gz side with `gz topic -l`.
+- **Markers missing/untextured:** ensure `GZ_SIM_RESOURCE_PATH` includes `models/`, and that the PNGs exist under `models/whycode_*/materials/textures/`.

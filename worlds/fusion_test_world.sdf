@@ -9,6 +9,25 @@
       <real_time_update_rate>1000</real_time_update_rate>
     </physics>
 
+    <!-- Essential Gazebo Plugins -->
+    <plugin
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="gz-sim-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+
     <!-- Scene settings -->
     <scene>
       <ambient>0.5 0.5 0.5 1.0</ambient>
@@ -59,10 +78,9 @@
             </plane>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
-            </script>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.3 0.3 0.3 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
           </material>
         </visual>
       </link>
@@ -91,10 +109,9 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Bricks</name>
-            </script>
+            <ambient>0.5 0.2 0.2 1</ambient>
+            <diffuse>0.5 0.2 0.2 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
           </material>
         </visual>
       </link>
@@ -119,10 +136,9 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Bricks</name>
-            </script>
+            <ambient>0.5 0.2 0.2 1</ambient>
+            <diffuse>0.5 0.2 0.2 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
           </material>
         </visual>
       </link>
@@ -147,10 +163,9 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/CeilingTiled</name>
-            </script>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
           </material>
         </visual>
       </link>
@@ -175,10 +190,9 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/CeilingTiled</name>
-            </script>
+            <ambient>0.9 0.9 0.9 1</ambient>
+            <diffuse>0.9 0.9 0.9 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
           </material>
         </visual>
       </link>
@@ -204,10 +218,9 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wood</name>
-            </script>
+            <ambient>0.6 0.4 0.2 1</ambient>
+            <diffuse>0.6 0.4 0.2 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
           </material>
         </visual>
       </link>
@@ -231,155 +244,46 @@
             </box>
           </geometry>
           <material>
-            <script>
-              <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Wood</name>
-            </script>
+            <ambient>0.6 0.4 0.2 1</ambient>
+            <diffuse>0.6 0.4 0.2 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
           </material>
         </visual>
       </link>
     </model>
 
     <!-- WhyCode Marker 0 - North-East Corner -->
-    <model name="whycode_marker_0">
-      <static>true</static>
+    <!-- Include model using URI (requires GAZEBO_MODEL_PATH to be set) -->
+    <include>
+      <uri>model://whycode_0</uri>
+      <name>whycode_marker_0</name>
       <!-- Pose: x y z roll pitch yaw (yaw=-135deg=-3π/4 to face inward) -->
       <pose>4.5 4.5 1.0 0 0 -2.356</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.2 0.2 0.01</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.2 0.2 0.01</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://whycode_marker_0/materials/scripts</uri>
-              <uri>model://whycode_marker_0/materials/textures</uri>
-              <name>WhyCode/Marker0</name>
-            </script>
-            <!-- Fallback if texture not found -->
-            <ambient>1 1 1 1</ambient>
-            <diffuse>1 1 1 1</diffuse>
-            <specular>0 0 0 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
+    </include>
 
     <!-- WhyCode Marker 1 - North-West Corner -->
-    <model name="whycode_marker_1">
-      <static>true</static>
+    <include>
+      <uri>model://whycode_1</uri>
+      <name>whycode_marker_1</name>
       <!-- Pose: x y z roll pitch yaw (yaw=135deg=3π/4 to face inward) -->
       <pose>-4.5 4.5 1.0 0 0 2.356</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.2 0.2 0.01</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.2 0.2 0.01</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://whycode_marker_1/materials/scripts</uri>
-              <uri>model://whycode_marker_1/materials/textures</uri>
-              <name>WhyCode/Marker1</name>
-            </script>
-            <ambient>1 0 0 1</ambient>
-            <diffuse>1 0 0 1</diffuse>
-            <specular>0 0 0 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
+    </include>
 
     <!-- WhyCode Marker 2 - South-West Corner -->
-    <model name="whycode_marker_2">
-      <static>true</static>
+    <include>
+      <uri>model://whycode_2</uri>
+      <name>whycode_marker_2</name>
       <!-- Pose: x y z roll pitch yaw (yaw=45deg=π/4 to face inward) -->
       <pose>-4.5 -4.5 1.0 0 0 0.785</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.2 0.2 0.01</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.2 0.2 0.01</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://whycode_marker_2/materials/scripts</uri>
-              <uri>model://whycode_marker_2/materials/textures</uri>
-              <name>WhyCode/Marker2</name>
-            </script>
-            <ambient>0 1 0 1</ambient>
-            <diffuse>0 1 0 1</diffuse>
-            <specular>0 0 0 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
+    </include>
 
     <!-- WhyCode Marker 3 - South-East Corner -->
-    <model name="whycode_marker_3">
-      <static>true</static>
+    <include>
+      <uri>model://whycode_3</uri>
+      <name>whycode_marker_3</name>
       <!-- Pose: x y z roll pitch yaw (yaw=-45deg=-π/4 to face inward) -->
       <pose>4.5 -4.5 1.0 0 0 -0.785</pose>
-      <link name="link">
-        <collision name="collision">
-          <geometry>
-            <box>
-              <size>0.2 0.2 0.01</size>
-            </box>
-          </geometry>
-        </collision>
-        <visual name="visual">
-          <geometry>
-            <box>
-              <size>0.2 0.2 0.01</size>
-            </box>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://whycode_marker_3/materials/scripts</uri>
-              <uri>model://whycode_marker_3/materials/textures</uri>
-              <name>WhyCode/Marker3</name>
-            </script>
-            <ambient>0 0 1 1</ambient>
-            <diffuse>0 0 1 1</diffuse>
-            <specular>0 0 0 1</specular>
-          </material>
-        </visual>
-      </link>
-    </model>
-
-    <!-- Gazebo ROS plugins -->
-    <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">
-      <ros>
-        <namespace>/gazebo</namespace>
-      </ros>
-      <update_rate>10.0</update_rate>
-    </plugin>
+    </include>
 
   </world>
 </sdf>

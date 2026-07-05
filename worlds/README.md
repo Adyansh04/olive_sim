@@ -4,7 +4,7 @@ This directory contains multiple world files designed to test different aspects 
 
 ## Available Worlds
 
-### 1. fusion_test_world_fortress.sdf (Original)
+### 1. fusion_test_world.sdf (Original)
 **Purpose**: General sensor fusion testing with loop closure
 **Layout**: 10m × 8m rectangular loop with hallways
 **Features**:
@@ -130,20 +130,20 @@ All worlds include 4 WhyCode markers at strategic corner locations for ground tr
 ### Launch a Specific World
 
 ```bash
-# Default world (fusion_test_world_fortress.sdf)
-ros2 launch olive_sim simulation_fortress.launch.py
+# Default world (fusion_test_world.sdf)
+ros2 launch olive_sim simulation_manual.launch.py
 
 # Warehouse world
-ros2 launch olive_sim simulation_fortress.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/warehouse_world.sdf
+ros2 launch olive_sim simulation_manual.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/warehouse_world.sdf
 
 # Maze world
-ros2 launch olive_sim simulation_fortress.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/maze_world.sdf
+ros2 launch olive_sim simulation_manual.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/maze_world.sdf
 
 # Office world
-ros2 launch olive_sim simulation_fortress.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/office_corridor_world.sdf
+ros2 launch olive_sim simulation_manual.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/office_corridor_world.sdf
 
 # Industrial world
-ros2 launch olive_sim simulation_fortress.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/industrial_facility_world.sdf
+ros2 launch olive_sim simulation_manual.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/industrial_facility_world.sdf
 ```
 
 ### Quick Launch Aliases (Optional)
@@ -151,17 +151,17 @@ ros2 launch olive_sim simulation_fortress.launch.py world:=$(ros2 pkg prefix oli
 Add to your `~/.bashrc`:
 
 ```bash
-alias olive_warehouse='ros2 launch olive_sim simulation_fortress.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/warehouse_world.sdf'
-alias olive_maze='ros2 launch olive_sim simulation_fortress.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/maze_world.sdf'
-alias olive_office='ros2 launch olive_sim simulation_fortress.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/office_corridor_world.sdf'
-alias olive_industrial='ros2 launch olive_sim simulation_fortress.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/industrial_facility_world.sdf'
+alias olive_warehouse='ros2 launch olive_sim simulation_manual.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/warehouse_world.sdf'
+alias olive_maze='ros2 launch olive_sim simulation_manual.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/maze_world.sdf'
+alias olive_office='ros2 launch olive_sim simulation_manual.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/office_corridor_world.sdf'
+alias olive_industrial='ros2 launch olive_sim simulation_manual.launch.py world:=$(ros2 pkg prefix olive_sim)/share/olive_sim/worlds/industrial_facility_world.sdf'
 ```
 
 ## Testing Strategy
 
 ### Recommended Testing Sequence
 
-1. **Start Simple**: Begin with `fusion_test_world_fortress.sdf` to establish baseline performance
+1. **Start Simple**: Begin with `fusion_test_world.sdf` to establish baseline performance
 2. **Add Complexity**: Move to `maze_world.sdf` for more feature-rich environment
 3. **Low-Light**: Test `warehouse_world.sdf` for dimmer lighting conditions
 4. **Subtle Features**: Challenge with `office_corridor_world.sdf` for low-contrast environment
@@ -246,7 +246,7 @@ To create your own world based on these templates:
 ## Troubleshooting
 
 **Markers not visible**:
-- Ensure `IGN_GAZEBO_RESOURCE_PATH` includes the models directory
+- Ensure `GZ_SIM_RESOURCE_PATH` includes the models directory
 - The launch file sets this automatically
 
 **Poor performance**:
