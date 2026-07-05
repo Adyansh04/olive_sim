@@ -43,7 +43,7 @@ worlds:
   # Maze world
   maze:
     name: "Navigation Maze"
-    description: "Complex maze with multiple paths and colored surfaces for feature-rich testing"
+    description: "Complex maze with image-textured floor/walls, wall paintings and 3D props (crates, pillars, barrels) for feature-rich visual-odometry testing"
     world_file: "maze_world.sdf"
     spawn_location:
       x: -6.0
@@ -53,9 +53,10 @@ worlds:
       pitch: 0.0
       yaw: 0.0
     characteristics:
-      - "Multi-colored painted surfaces"
+      - "Tiled floor + brick/panel/block wall textures"
+      - "High-contrast wall paintings + 3D props (non-coplanar features)"
+      - "High visual feature density (monocular VO)"
       - "Complex path choices"
-      - "High visual feature density"
     difficulty: "hard"
     size: "16m x 16m"
     
