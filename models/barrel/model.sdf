@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!-- Textured metal barrel (radius 0.3, height 0.85). Geometry centred on the
+     link origin; include with z = 0.425 so it rests on the floor. -->
+<sdf version="1.7">
+  <model name="barrel">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <cylinder><radius>0.3</radius><length>0.85</length></cylinder>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <cylinder><radius>0.3</radius><length>0.85</length></cylinder>
+        </geometry>
+        <material>
+          <ambient>1 1 1 1</ambient>
+          <diffuse>1 1 1 1</diffuse>
+          <specular>0.3 0.3 0.3 1</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://barrel/materials/textures/barrel.png</albedo_map>
+              <roughness>0.4</roughness>
+              <metalness>0.6</metalness>
+            </metal>
+          </pbr>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
