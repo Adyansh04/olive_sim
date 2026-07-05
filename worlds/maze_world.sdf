@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <sdf version="1.7">
   <world name="maze_world">
-    
+
     <!-- Physics settings -->
     <physics name="default_physics" type="ode">
       <max_step_size>0.001</max_step_size>
@@ -33,7 +33,9 @@
       <direction>0 0 -1</direction>
     </light>
 
-    <!-- Ground Plane - tiled floor -->
+    <!-- Ground Plane. Collision stays a large plane; the visual is a
+         16x16 textured slab (tiled floor) so the low forward camera has
+         dense, multi-depth features for the visual-odometry front-end. -->
     <model name="ground_plane">
       <static>true</static>
       <link name="link">
@@ -46,20 +48,21 @@
           </geometry>
         </collision>
         <visual name="visual">
+          <pose>0 0 -0.01 0 0 0</pose>
           <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane>
+            <box>
+              <size>16 16 0.02</size>
+            </box>
           </geometry>
           <material>
-            <ambient>0.8 0.8 0.75 1</ambient>
-            <diffuse>0.9 0.9 0.85 1</diffuse>
-            <specular>0.3 0.3 0.3 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
             <pbr>
               <metal>
-                <roughness>0.6</roughness>
-                <metalness>0.2</metalness>
+                <albedo_map>model://vo_textures/materials/textures/floor_tiles.png</albedo_map>
+                <roughness>0.7</roughness>
+                <metalness>0.1</metalness>
               </metal>
             </pbr>
           </material>
@@ -68,8 +71,8 @@
     </model>
 
     <!-- Maze Layout: Complex path with multiple turns and dead ends -->
-    
-    <!-- Outer boundary walls -->
+
+    <!-- Outer boundary walls (textured for visual odometry) -->
     <model name="boundary_north">
       <static>true</static>
       <pose>0 8 1 0 0 0</pose>
@@ -88,13 +91,14 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.3 0.5 0.7 1</ambient>
-            <diffuse>0.4 0.6 0.8 1</diffuse>
-            <specular>0.2 0.2 0.3 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
-                <roughness>0.7</roughness>
-                <metalness>0.2</metalness>
+                <albedo_map>model://vo_textures/materials/textures/wall_brick.png</albedo_map>
+                <roughness>0.75</roughness>
+                <metalness>0.1</metalness>
               </metal>
             </pbr>
           </material>
@@ -120,13 +124,14 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.3 0.5 0.7 1</ambient>
-            <diffuse>0.4 0.6 0.8 1</diffuse>
-            <specular>0.2 0.2 0.3 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
-                <roughness>0.7</roughness>
-                <metalness>0.2</metalness>
+                <albedo_map>model://vo_textures/materials/textures/wall_brick.png</albedo_map>
+                <roughness>0.75</roughness>
+                <metalness>0.1</metalness>
               </metal>
             </pbr>
           </material>
@@ -152,11 +157,12 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.7 0.5 0.3 1</ambient>
-            <diffuse>0.8 0.6 0.4 1</diffuse>
-            <specular>0.15 0.15 0.1 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
+                <albedo_map>model://vo_textures/materials/textures/wall_blocks.png</albedo_map>
                 <roughness>0.8</roughness>
                 <metalness>0.1</metalness>
               </metal>
@@ -184,11 +190,12 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.7 0.5 0.3 1</ambient>
-            <diffuse>0.8 0.6 0.4 1</diffuse>
-            <specular>0.15 0.15 0.1 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
+                <albedo_map>model://vo_textures/materials/textures/wall_blocks.png</albedo_map>
                 <roughness>0.8</roughness>
                 <metalness>0.1</metalness>
               </metal>
@@ -218,11 +225,12 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.5 0.6 0.5 1</ambient>
-            <diffuse>0.6 0.7 0.6 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
+                <albedo_map>model://vo_textures/materials/textures/wall_panels.png</albedo_map>
                 <roughness>0.75</roughness>
                 <metalness>0.15</metalness>
               </metal>
@@ -250,11 +258,12 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.6 0.4 0.5 1</ambient>
-            <diffuse>0.7 0.5 0.6 1</diffuse>
-            <specular>0.15 0.15 0.15 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
+                <albedo_map>model://vo_textures/materials/textures/wall_brick.png</albedo_map>
                 <roughness>0.8</roughness>
                 <metalness>0.1</metalness>
               </metal>
@@ -283,11 +292,12 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.4 0.4 0.6 1</ambient>
-            <diffuse>0.5 0.5 0.7 1</diffuse>
-            <specular>0.25 0.25 0.25 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
+                <albedo_map>model://vo_textures/materials/textures/wall_blocks.png</albedo_map>
                 <roughness>0.65</roughness>
                 <metalness>0.25</metalness>
               </metal>
@@ -315,11 +325,12 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.6 0.5 0.4 1</ambient>
-            <diffuse>0.7 0.6 0.5 1</diffuse>
-            <specular>0.18 0.18 0.15 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
+                <albedo_map>model://vo_textures/materials/textures/wall_panels.png</albedo_map>
                 <roughness>0.85</roughness>
                 <metalness>0.08</metalness>
               </metal>
@@ -348,11 +359,12 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.55 0.45 0.55 1</ambient>
-            <diffuse>0.65 0.55 0.65 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
+                <albedo_map>model://vo_textures/materials/textures/wall_panels.png</albedo_map>
                 <roughness>0.72</roughness>
                 <metalness>0.18</metalness>
               </metal>
@@ -380,11 +392,12 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.45 0.55 0.45 1</ambient>
-            <diffuse>0.55 0.65 0.55 1</diffuse>
-            <specular>0.22 0.22 0.22 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
+                <albedo_map>model://vo_textures/materials/textures/wall_brick.png</albedo_map>
                 <roughness>0.7</roughness>
                 <metalness>0.2</metalness>
               </metal>
@@ -393,7 +406,7 @@
         </visual>
       </link>
     </model>
-    
+
     <!-- Additional maze complexity walls -->
     <model name="maze_wall_7">
       <static>true</static>
@@ -413,11 +426,12 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.5 0.5 0.6 1</ambient>
-            <diffuse>0.6 0.6 0.7 1</diffuse>
-            <specular>0.2 0.2 0.25 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
+                <albedo_map>model://vo_textures/materials/textures/wall_blocks.png</albedo_map>
                 <roughness>0.73</roughness>
                 <metalness>0.17</metalness>
               </metal>
@@ -445,15 +459,248 @@
             </box>
           </geometry>
           <material>
-            <ambient>0.6 0.5 0.5 1</ambient>
-            <diffuse>0.7 0.6 0.6 1</diffuse>
-            <specular>0.18 0.16 0.16 1</specular>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
             <pbr>
               <metal>
+                <albedo_map>model://vo_textures/materials/textures/wall_panels.png</albedo_map>
                 <roughness>0.78</roughness>
                 <metalness>0.13</metalness>
               </metal>
             </pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Wall paintings: high-contrast landmarks mounted low (camera height)
+         and slightly proud of the boundary walls, facing the drive ring. -->
+    <model name="painting_n1">
+      <static>true</static>
+      <pose>-3.5 7.75 0.45 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.9 0.05 0.7</size></box></geometry>
+          <material>
+            <ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0 0 0 1</specular>
+            <pbr><metal>
+              <albedo_map>model://vo_textures/materials/textures/painting_1.png</albedo_map>
+              <roughness>0.6</roughness><metalness>0.0</metalness>
+            </metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="painting_n2">
+      <static>true</static>
+      <pose>3.5 7.75 0.45 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.9 0.05 0.7</size></box></geometry>
+          <material>
+            <ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0 0 0 1</specular>
+            <pbr><metal>
+              <albedo_map>model://vo_textures/materials/textures/painting_2.png</albedo_map>
+              <roughness>0.6</roughness><metalness>0.0</metalness>
+            </metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="painting_s1">
+      <static>true</static>
+      <pose>-3.5 -7.75 0.45 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.9 0.05 0.7</size></box></geometry>
+          <material>
+            <ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0 0 0 1</specular>
+            <pbr><metal>
+              <albedo_map>model://vo_textures/materials/textures/painting_3.png</albedo_map>
+              <roughness>0.6</roughness><metalness>0.0</metalness>
+            </metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="painting_s2">
+      <static>true</static>
+      <pose>3.5 -7.75 0.45 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.9 0.05 0.7</size></box></geometry>
+          <material>
+            <ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0 0 0 1</specular>
+            <pbr><metal>
+              <albedo_map>model://vo_textures/materials/textures/painting_4.png</albedo_map>
+              <roughness>0.6</roughness><metalness>0.0</metalness>
+            </metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="painting_e1">
+      <static>true</static>
+      <pose>7.75 -3.5 0.45 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.9 0.7</size></box></geometry>
+          <material>
+            <ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0 0 0 1</specular>
+            <pbr><metal>
+              <albedo_map>model://vo_textures/materials/textures/painting_5.png</albedo_map>
+              <roughness>0.6</roughness><metalness>0.0</metalness>
+            </metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="painting_e2">
+      <static>true</static>
+      <pose>7.75 3.5 0.45 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.9 0.7</size></box></geometry>
+          <material>
+            <ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0 0 0 1</specular>
+            <pbr><metal>
+              <albedo_map>model://vo_textures/materials/textures/painting_6.png</albedo_map>
+              <roughness>0.6</roughness><metalness>0.0</metalness>
+            </metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="painting_w1">
+      <static>true</static>
+      <pose>-7.75 -3.5 0.45 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.9 0.7</size></box></geometry>
+          <material>
+            <ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0 0 0 1</specular>
+            <pbr><metal>
+              <albedo_map>model://vo_textures/materials/textures/painting_1.png</albedo_map>
+              <roughness>0.6</roughness><metalness>0.0</metalness>
+            </metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="painting_w2">
+      <static>true</static>
+      <pose>-7.75 3.5 0.45 0 0 0</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.9 0.7</size></box></geometry>
+          <material>
+            <ambient>1 1 1 1</ambient><diffuse>1 1 1 1</diffuse><specular>0 0 0 1</specular>
+            <pbr><metal>
+              <albedo_map>model://vo_textures/materials/textures/painting_3.png</albedo_map>
+              <roughness>0.6</roughness><metalness>0.0</metalness>
+            </metal></pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 3D props: textured crates / pillars / barrel giving the monocular
+         camera non-coplanar structure (well-conditioned essential matrix).
+         All sit inside the +-7 drive ring with >1 m clearance, clear of the
+         interior walls, the spawn (-6,-6), and the marker sightlines. -->
+    <include>
+      <uri>model://crate</uri>
+      <name>prop_crate_ne</name>
+      <pose>5.8 5.8 0.25 0 0 0.5</pose>
+    </include>
+
+    <include>
+      <uri>model://pillar</uri>
+      <name>prop_pillar_nw</name>
+      <pose>-5.8 5.8 0.6 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://barrel</uri>
+      <name>prop_barrel_se</name>
+      <pose>5.8 -5.8 0.425 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://pillar</uri>
+      <name>prop_pillar_e</name>
+      <pose>5.8 -1.0 0.6 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://crate</uri>
+      <name>prop_crate_n</name>
+      <pose>-2.0 5.8 0.25 0 0 -0.4</pose>
+    </include>
+
+    <include>
+      <uri>model://barrel</uri>
+      <name>prop_barrel_mid</name>
+      <pose>2.5 2.5 0.425 0 0 0</pose>
+    </include>
+
+    <!-- Plain white backing panels behind each marker: the textured walls
+         drown out the WhyCode pattern (dark ring lost in the brick mortar),
+         so each marker gets a matte-white board to segment against. Yaw
+         matches the marker so the panel faces the interior; sized to fit the
+         corner triangle without poking through the boundary walls. -->
+    <model name="marker_backing_0">
+      <static>true</static>
+      <pose>7.585 7.585 1.2 0 0 -2.356</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.9 1.0</size></box></geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient><diffuse>1 1 1 1</diffuse><specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marker_backing_1">
+      <static>true</static>
+      <pose>-7.585 7.585 1.2 0 0 2.356</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.9 1.0</size></box></geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient><diffuse>1 1 1 1</diffuse><specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marker_backing_2">
+      <static>true</static>
+      <pose>-7.585 -7.585 1.2 0 0 0.785</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.9 1.0</size></box></geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient><diffuse>1 1 1 1</diffuse><specular>0.02 0.02 0.02 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="marker_backing_3">
+      <static>true</static>
+      <pose>7.585 -7.585 1.2 0 0 -0.785</pose>
+      <link name="link">
+        <visual name="visual">
+          <geometry><box><size>0.05 0.9 1.0</size></box></geometry>
+          <material>
+            <ambient>0.9 0.9 0.9 1</ambient><diffuse>1 1 1 1</diffuse><specular>0.02 0.02 0.02 1</specular>
           </material>
         </visual>
       </link>
