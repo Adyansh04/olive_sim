@@ -173,7 +173,8 @@ def load_world_config(context, *args, **kwargs):
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             '/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
             '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
-            '/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
+            # No /tf bridge: DiffDrive was the only gz /tf producer and its TF
+            # publication is disabled (the fusion node owns odom->base now).
             '/joint_states@sensor_msgs/msg/JointState@gz.msgs.Model',
             '/ground_truth@nav_msgs/msg/Odometry@gz.msgs.Odometry',
         ],

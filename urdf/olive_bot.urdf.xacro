@@ -7,8 +7,10 @@
   matches the DiffDrive plugin's kinematics exactly -> clean, low-slip wheel odometry.
   Sensor suite (16-beam 3D LiDAR, 100 Hz IMU, RGB camera) and all topic names are unchanged.
 
-  Frames (REP-105 friendly): odom -> base_footprint -> base_link -> {sensors}.
-  DiffDrive publishes odom->base_footprint; robot_state_publisher publishes base_footprint->base_link.
+  Frames (REP-105 friendly): map -> odom -> base_footprint -> base_link -> {sensors}.
+  The OLIVE fusion node owns both map->odom and the smooth odom->base_footprint
+  (publish_odom_tf); DiffDrive publishes /odom as a topic only (no TF), and
+  robot_state_publisher publishes base_footprint->base_link.
 -->
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="olive_bot">
 
@@ -247,7 +249,8 @@
       <min_angular_velocity>-1.2</min_angular_velocity>
       <topic>cmd_vel</topic>
       <odom_topic>odom</odom_topic>
-      <tf_topic>/tf</tf_topic>
+      <!-- No <tf_topic>: the fusion node owns odom->base_footprint TF
+           (publish_odom_tf). The /odom topic above stays as the wheel input. -->
       <frame_id>odom</frame_id>
       <child_frame_id>base_footprint</child_frame_id>
     </plugin>
