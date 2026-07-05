@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<!-- Texture-only model: exists so model://vo_textures/materials/textures/*.png
+     resolves. It is never included in a world; the maze references its
+     textures directly from wall/floor/painting materials. -->
+<sdf version="1.7">
+  <model name="vo_textures">
+    <static>true</static>
+    <link name="link"/>
+  </model>
+</sdf>
