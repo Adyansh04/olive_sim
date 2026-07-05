@@ -262,9 +262,14 @@
     <!-- IMU system (drives the imu sensor below) -->
     <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
 
-    <!-- Perfect ground-truth odometry (topic only, NOT on /tf, to avoid TF conflicts) -->
+    <!-- Perfect ground-truth odometry (topic only, NOT on /tf, to avoid TF conflicts).
+         Frame is 'map', NOT 'odom': this publisher reports the robot's WORLD-absolute
+         pose (starts at the spawn's world coords, e.g. -6,-6), whereas the TF 'odom'
+         frame is spawn-origined (DiffDrive /odom starts at 0,0). Labelling it 'map'
+         (== world, where the fusion anchors via surveyed markers) makes it overlap the
+         fused /olive/odometry in RViz (fixed frame map) once the first marker anchors. -->
     <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
-      <odom_frame>odom</odom_frame>
+      <odom_frame>map</odom_frame>
       <robot_base_frame>base_link</robot_base_frame>
       <odom_topic>/ground_truth</odom_topic>
       <dimensions>3</dimensions>
